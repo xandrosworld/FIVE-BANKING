@@ -9,10 +9,11 @@ pnpm install
 pnpm dev
 ```
 
-Open either implemented profile:
+Open an implemented profile:
 
 - `http://localhost:3000/mai-tan-thanh`
 - `http://localhost:3000/duong-hoang-anh`
+- `http://localhost:3000/karthikeyan-ramaswamy`
 
 English is the default language. Add `?lang=vi` or use the page switcher for Vietnamese.
 

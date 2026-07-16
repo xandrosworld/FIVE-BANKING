@@ -2,6 +2,8 @@ import { expect, test, type Page } from "@playwright/test";
 
 const route = "/mai-tan-thanh";
 const financeRoute = "/duong-hoang-anh";
+const advisoryRoute = "/karthikeyan-ramaswamy";
+const karthikeyanLinkedIn = "https://www.linkedin.com/in/karthikeyan-ramaswamy-a0797774";
 const allowedGitHub = [
   "https://github.com/xandrosworld",
   "https://github.com/xandrosworld/IDP-PLATFORM-PRO",
@@ -181,6 +183,81 @@ test("finance profile metadata and structured data are scoped correctly", async 
   expect(person.address).toBeUndefined();
 });
 
+test("BFSI advisory profile presents transformation expertise and public contact", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(advisoryRoute);
+
+  await expect(page.getByRole("heading", { level: 1, name: "Karthikeyan Ramaswamy" })).toBeVisible();
+  await expect(page.getByText("Senior BFSI Expert & Solution Architect", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore BFSI transformation" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From complex banking needs to executable change" })).toBeVisible();
+  await expect(page.getByText("35+ years across banking and BFSI technology", { exact: true })).toBeVisible();
+  await expect(page.locator(`a[href="${karthikeyanLinkedIn}"]`)).toHaveCount(3);
+  await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await scrollThroughPage(page);
+  await page.screenshot({
+    path: "artifacts/screenshots/karthikeyan-ramaswamy-desktop.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  expect(errors).toEqual([]);
+});
+
+test("BFSI advisory profile mobile navigation and Vietnamese copy", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(advisoryRoute);
+
+  const menuButton = page.getByRole("button", { name: "Menu" });
+  await menuButton.click();
+  await page.getByRole("link", { name: "Transformation case" }).click();
+  await expect(page).toHaveURL(/#market-case$/);
+
+  await page.getByRole("button", { name: "VI" }).click();
+  await expect(page).toHaveURL(/lang=vi/);
+  await expect(page.getByText("Chuyên gia Cấp cao BFSI & Kiến trúc sư Giải pháp", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Case chuyển đổi" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await scrollThroughPage(page);
+  await page.screenshot({
+    path: "artifacts/screenshots/karthikeyan-ramaswamy-mobile.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+});
+
+test("BFSI advisory metadata, structured data and sitemap are scoped correctly", async ({ page, request }) => {
+  await page.goto(advisoryRoute);
+  await expect(page).toHaveTitle("Karthikeyan Ramaswamy | Senior BFSI Expert");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    /\/karthikeyan-ramaswamy$/,
+  );
+
+  const personData = await page.locator('script[type="application/ld+json"]').textContent();
+  const person = JSON.parse(personData ?? "{}");
+  expect(person["@type"]).toBe("Person");
+  expect(person.name).toBe("Karthikeyan Ramaswamy");
+  expect(person.email).toBeUndefined();
+  expect(person.sameAs).toEqual([karthikeyanLinkedIn]);
+  expect(person.knowsAbout).toContain("BFSI solution architecture");
+  expect(person.memberOf.name).toBe("The Banking Five");
+  expect(person.telephone).toBeUndefined();
+  expect(person.address).toBeUndefined();
+
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.ok()).toBe(true);
+  expect(await sitemap.text()).toContain("/karthikeyan-ramaswamy");
+});
+
 test("legacy team routes permanently redirect to the short profile paths", async ({ request }) => {
   for (const legacyRoute of ["/team/mai-tan-thanh", "/the-banking-five/mai-tan-thanh"]) {
     const response = await request.get(legacyRoute, { maxRedirects: 0 });
@@ -193,6 +270,14 @@ for (const width of [320, 375, 768, 1024, 1440]) {
   test(`has no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
     await page.goto(route);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}
+
+for (const width of [320, 375, 768, 1024, 1440]) {
+  test(`BFSI advisory profile has no horizontal overflow at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
+    await page.goto(advisoryRoute);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 }

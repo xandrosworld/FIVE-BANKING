@@ -5,6 +5,14 @@ const assetRoot = "/images/duong-hoang-anh";
 export const duongHoangAnh: MemberProfile = {
   slug: "duong-hoang-anh",
   variant: "finance",
+  knowsAbout: [
+    "Fixed income",
+    "Money markets",
+    "Asset liability management",
+    "Liquidity risk",
+    "Bond futures",
+    "Interest rate swaps",
+  ],
   identity: {
     name: "Dương Hoàng Anh",
     initials: "DHA",
@@ -124,6 +132,12 @@ export const duongHoangAnh: MemberProfile = {
       en: "A financial product only works when market logic, controls and daily operations agree.",
       vi: "Một sản phẩm tài chính chỉ vận hành được khi logic thị trường, kiểm soát và hoạt động hàng ngày cùng thống nhất.",
     },
+    blueprintLabel: { en: "Market infrastructure", vi: "Hạ tầng thị trường" },
+    blueprintMarkers: [
+      { en: "Design", vi: "Thiết kế" },
+      { en: "Controls", vi: "Kiểm soát" },
+      { en: "Go-live", vi: "Go-live" },
+    ],
     facts: [
       {
         label: { en: "Challenge", vi: "Thách thức" },

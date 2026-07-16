@@ -54,22 +54,9 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const initialLocale: Locale = "en";
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const canonicalUrl = new URL(`/${profile.slug}`, siteUrl).toString();
-  const knowsAbout = profile.variant === "technology"
-    ? [
-        "Applied AI",
-        "Banking technology",
-        "Solution architecture",
-        "Document intelligence",
-        "AI workflow orchestration",
-      ]
-    : [
-        "Fixed income",
-        "Money markets",
-        "Asset liability management",
-        "Liquidity risk",
-        "Bond futures",
-        "Interest rate swaps",
-      ];
+  const sameAs = [profile.contact.github, profile.contact.linkedin].filter(
+    (url): url is string => Boolean(url),
+  );
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -81,8 +68,8 @@ export default async function MemberPage({ params }: MemberPageProps) {
       "@type": "Organization",
       name: "The Banking Five",
     },
-    sameAs: profile.contact.github ? [profile.contact.github] : undefined,
-    knowsAbout,
+    sameAs: sameAs.length ? sameAs : undefined,
+    knowsAbout: profile.knowsAbout,
   };
 
   return (

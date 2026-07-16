@@ -30,6 +30,7 @@ const ui = {
     skip: "Skip to content",
     explore: "Explore DocMind",
     github: "GitHub",
+    linkedin: "LinkedIn",
     judgeRead: "Judge summary",
     flagship: "Flagship case",
     productEvidence: "Product evidence",
@@ -59,6 +60,7 @@ const ui = {
     skip: "Đi tới nội dung chính",
     explore: "Khám phá DocMind",
     github: "GitHub",
+    linkedin: "LinkedIn",
     judgeRead: "Tóm tắt cho BGK",
     flagship: "Dự án flagship",
     productEvidence: "Bằng chứng sản phẩm",
@@ -105,6 +107,22 @@ const navigation = {
       ["Case thị trường", "#market-case"],
       ["Vai trò", "#team-role"],
       ["Chuyên môn", "#expertise"],
+      ["Kinh nghiệm", "#background"],
+      ["Liên hệ", "#contact"],
+    ],
+  },
+  advisory: {
+    en: [
+      ["Transformation case", "#market-case"],
+      ["Team role", "#team-role"],
+      ["BFSI expertise", "#expertise"],
+      ["Background", "#background"],
+      ["Contact", "#contact"],
+    ],
+    vi: [
+      ["Case chuyển đổi", "#market-case"],
+      ["Vai trò", "#team-role"],
+      ["Chuyên môn BFSI", "#expertise"],
       ["Kinh nghiệm", "#background"],
       ["Liên hệ", "#contact"],
     ],
@@ -381,7 +399,7 @@ function MarketCase({
         <div className="market-blueprint">
           <figure className="market-thesis-card" data-reveal>
             <div className="market-card-meta mono">
-              <span>Market infrastructure</span>
+              <span>{localize(profile.blueprintLabel, locale)}</span>
               <span>01 / 03</span>
             </div>
             <div className="market-curve-plot" aria-hidden="true">
@@ -395,9 +413,15 @@ function MarketCase({
                 <circle cx="552" cy="108" r="7" />
                 <circle cx="746" cy="43" r="7" />
               </svg>
-              <span className="curve-label curve-label-design mono">Design</span>
-              <span className="curve-label curve-label-control mono">Controls</span>
-              <span className="curve-label curve-label-live mono">Go-live</span>
+              <span className="curve-label curve-label-design mono">
+                {localize(profile.blueprintMarkers[0], locale)}
+              </span>
+              <span className="curve-label curve-label-control mono">
+                {localize(profile.blueprintMarkers[1], locale)}
+              </span>
+              <span className="curve-label curve-label-live mono">
+                {localize(profile.blueprintMarkers[2], locale)}
+              </span>
             </div>
             <figcaption>{localize(profile.thesis, locale)}</figcaption>
           </figure>
@@ -417,8 +441,8 @@ function MarketCase({
   );
 }
 
-function ExpertiseVisual({ visual }: { visual: FinanceMemberProfile["expertise"]["items"][number]["visual"] }) {
-  if (visual === "curve") {
+function ExpertiseVisual({ item }: { item: FinanceMemberProfile["expertise"]["items"][number] }) {
+  if (item.visual === "curve") {
     return (
       <svg viewBox="0 0 620 190" preserveAspectRatio="none">
         <path className="expertise-grid-line" d="M0 150 H620" />
@@ -428,7 +452,7 @@ function ExpertiseVisual({ visual }: { visual: FinanceMemberProfile["expertise"]
     );
   }
 
-  if (visual === "liquidity") {
+  if (item.visual === "liquidity") {
     return (
       <div className="liquidity-bars">
         {[44, 68, 52, 88, 64, 76, 96].map((height, index) => (
@@ -440,9 +464,9 @@ function ExpertiseVisual({ visual }: { visual: FinanceMemberProfile["expertise"]
 
   return (
     <div className="quant-stack mono">
-      <span>pandas.read_excel()</span>
-      <span>yield_curve.fit()</span>
-      <span>risk_report.export()</span>
+      {(item.visualLines ?? ["pandas.read_excel()", "yield_curve.fit()", "risk_report.export()"]).map((line) => (
+        <span key={line}>{line}</span>
+      ))}
     </div>
   );
 }
@@ -476,7 +500,7 @@ function ExpertiseSection({
             >
               <div className={`expertise-visual expertise-${item.visual}`} aria-hidden="true">
                 <span className="expertise-code mono">{item.code}</span>
-                <ExpertiseVisual visual={item.visual} />
+                <ExpertiseVisual item={item} />
                 <span className="expertise-signal mono">{localize(item.signal, locale)}</span>
               </div>
               <div className="expertise-details">
@@ -562,12 +586,20 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
                   >
                     {copy.github}
                   </RepositoryLink>
-                ) : (
+                ) : profile.contact.email ? (
                   <a className="button button-secondary" href={`mailto:${profile.contact.email}`}>
                     {localize(profile.contact.ctaLabel, locale)}
                     <Arrow />
                   </a>
-                )}
+                ) : profile.contact.linkedin ? (
+                  <RepositoryLink
+                    href={profile.contact.linkedin}
+                    label={copy.linkedin}
+                    className="button button-secondary"
+                  >
+                    {localize(profile.contact.ctaLabel, locale)}
+                  </RepositoryLink>
+                ) : null}
               </div>
             </div>
 
@@ -751,14 +783,35 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
             </div>
             <div className="contact-copy">
               <p>{localize(profile.contact.body, locale)}</p>
-              <a className="contact-email mono" href={`mailto:${profile.contact.email}`}>
-                {profile.contact.email}
-              </a>
-              <div className="contact-actions">
-                <a className="button button-primary" href={`mailto:${profile.contact.email}`}>
-                  {localize(profile.contact.ctaLabel, locale)}
-                  <span aria-hidden="true">↗</span>
+              {profile.contact.email ? (
+                <a className="contact-email mono" href={`mailto:${profile.contact.email}`}>
+                  {profile.contact.email}
                 </a>
+              ) : profile.contact.linkedin ? (
+                <a
+                  className="contact-email mono"
+                  href={profile.contact.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {profile.contact.linkedin.replace(/^https?:\/\/(www\.)?/, "")}
+                </a>
+              ) : null}
+              <div className="contact-actions">
+                {profile.contact.email ? (
+                  <a className="button button-primary" href={`mailto:${profile.contact.email}`}>
+                    {localize(profile.contact.ctaLabel, locale)}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : profile.contact.linkedin ? (
+                  <RepositoryLink
+                    href={profile.contact.linkedin}
+                    label={copy.linkedin}
+                    className="button button-primary"
+                  >
+                    {localize(profile.contact.ctaLabel, locale)}
+                  </RepositoryLink>
+                ) : null}
                 {profile.contact.github ? (
                   <RepositoryLink
                     href={profile.contact.github}
@@ -766,6 +819,15 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
                     className="button button-secondary"
                   >
                     {copy.github}
+                  </RepositoryLink>
+                ) : null}
+                {profile.contact.email && profile.contact.linkedin ? (
+                  <RepositoryLink
+                    href={profile.contact.linkedin}
+                    label={copy.linkedin}
+                    className="button button-secondary"
+                  >
+                    {copy.linkedin}
                   </RepositoryLink>
                 ) : null}
               </div>

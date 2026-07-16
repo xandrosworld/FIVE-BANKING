@@ -1,5 +1,6 @@
 import type { Locale, LocalizedCopy, MemberProfile } from "@/types/profile";
 import { duongHoangAnh } from "./duong-hoang-anh.ts";
+import { karthikeyanRamaswamy } from "./karthikeyan-ramaswamy.ts";
 
 export const githubUrl = "https://github.com/xandrosworld";
 
@@ -8,6 +9,13 @@ const assetRoot = "/images/mai-tan-thanh";
 export const maiTanThanh: MemberProfile = {
   slug: "mai-tan-thanh",
   variant: "technology",
+  knowsAbout: [
+    "Applied AI",
+    "Banking technology",
+    "Solution architecture",
+    "Document intelligence",
+    "AI workflow orchestration",
+  ],
   identity: {
     name: "Mai Tấn Thành",
     initials: "MTT",
@@ -359,6 +367,7 @@ export const maiTanThanh: MemberProfile = {
 export const profiles: Record<string, MemberProfile> = {
   [maiTanThanh.slug]: maiTanThanh,
   [duongHoangAnh.slug]: duongHoangAnh,
+  [karthikeyanRamaswamy.slug]: karthikeyanRamaswamy,
 };
 
 export function localize(copy: LocalizedCopy, locale: Locale): string {

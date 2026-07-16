@@ -57,12 +57,14 @@ export interface ExpertiseCase {
   evidence: LocalizedCopy;
   signal: LocalizedCopy;
   visual: "curve" | "liquidity" | "quant";
+  visualLines?: [string, string, string];
   featured?: boolean;
 }
 
 interface BaseMemberProfile {
   slug: string;
-  variant: "technology" | "finance";
+  variant: "technology" | "finance" | "advisory";
+  knowsAbout: string[];
   identity: {
     name: string;
     initials: string;
@@ -98,8 +100,9 @@ interface BaseMemberProfile {
     title: LocalizedCopy;
     body: LocalizedCopy;
     ctaLabel: LocalizedCopy;
-    email: string;
+    email?: string;
     github?: string;
+    linkedin?: string;
   };
   seo: {
     title: string;
@@ -130,7 +133,7 @@ export interface TechnologyMemberProfile extends BaseMemberProfile {
 }
 
 export interface FinanceMemberProfile extends BaseMemberProfile {
-  variant: "finance";
+  variant: "finance" | "advisory";
   marketCase: {
     name: string;
     sectionLabel: LocalizedCopy;
@@ -138,6 +141,8 @@ export interface FinanceMemberProfile extends BaseMemberProfile {
     intro: LocalizedCopy;
     role: LocalizedCopy;
     thesis: LocalizedCopy;
+    blueprintLabel: LocalizedCopy;
+    blueprintMarkers: [LocalizedCopy, LocalizedCopy, LocalizedCopy];
     facts: Array<{
       label: LocalizedCopy;
       body: LocalizedCopy;

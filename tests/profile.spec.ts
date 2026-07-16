@@ -115,11 +115,12 @@ test("finance profile presents market expertise without the excluded assignment"
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(financeRoute);
 
-  await expect(page.getByRole("heading", { level: 1, name: "Dương Hoàng Anh, CFA" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Dương Hoàng Anh" })).toBeVisible();
   await expect(page.getByText("Fixed Income Strategist & ALM Advisor", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Explore market expertise" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "From market need to a live financial product" })).toBeVisible();
-  await expect(page.getByText("CFA Charterholder", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Passed Level III of the CFA Program", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText(/CFA Charterholder/i)).toHaveCount(0);
   await expect(page.getByText(/State Bank of Vietnam/i)).toHaveCount(0);
   await expect(page.getByText(/\bSBV\b/i)).toHaveCount(0);
   await expect(page.locator('a[href^="https://github.com/"]')).toHaveCount(0);
@@ -161,7 +162,7 @@ test("finance profile mobile navigation and Vietnamese copy", async ({ page }) =
 
 test("finance profile metadata and structured data are scoped correctly", async ({ page }) => {
   await page.goto(financeRoute);
-  await expect(page).toHaveTitle("Dương Hoàng Anh, CFA | Fixed Income Strategist");
+  await expect(page).toHaveTitle("Dương Hoàng Anh | Fixed Income Strategist");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
     /\/duong-hoang-anh$/,
@@ -170,6 +171,8 @@ test("finance profile metadata and structured data are scoped correctly", async 
   const personData = await page.locator('script[type="application/ld+json"]').textContent();
   const person = JSON.parse(personData ?? "{}");
   expect(person["@type"]).toBe("Person");
+  expect(person.name).toBe("Dương Hoàng Anh");
+  expect(personData).not.toMatch(/CFA Charterholder|Dương Hoàng Anh,\s*CFA/i);
   expect(person.email).toBe("anhdh1994@gmail.com");
   expect(person.sameAs).toBeUndefined();
   expect(person.knowsAbout).toContain("Fixed income");

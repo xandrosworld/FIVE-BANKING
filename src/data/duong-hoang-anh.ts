@@ -6,7 +6,7 @@ export const duongHoangAnh: MemberProfile = {
   slug: "duong-hoang-anh",
   variant: "finance",
   identity: {
-    name: "Dương Hoàng Anh, CFA",
+    name: "Dương Hoàng Anh",
     initials: "DHA",
     role: {
       en: "Fixed Income Strategist & ALM Advisor",
@@ -27,7 +27,7 @@ export const duongHoangAnh: MemberProfile = {
     },
     caption: [
       { en: "Markets / ALM / Risk", vi: "Thị trường / ALM / Rủi ro" },
-      { en: "BIDV / CFA", vi: "BIDV / CFA" },
+      { en: "BIDV / Fixed Income", vi: "BIDV / Trái phiếu" },
     ],
   },
   competitionLabel: {
@@ -40,8 +40,11 @@ export const duongHoangAnh: MemberProfile = {
   },
   judgeSummary: [
     {
-      label: { en: "Professional standard", vi: "Chuẩn nghề nghiệp" },
-      value: { en: "CFA Charterholder", vi: "CFA Charterholder" },
+      label: { en: "Professional milestone", vi: "Cột mốc chuyên môn" },
+      value: {
+        en: "Passed Level III of the CFA Program",
+        vi: "Đã vượt qua Level III của CFA Program",
+      },
     },
     {
       label: { en: "Market experience", vi: "Kinh nghiệm thị trường" },
@@ -268,7 +271,10 @@ export const duongHoangAnh: MemberProfile = {
       },
     ],
     recognition: [
-      { en: "CFA Charterholder", vi: "CFA Charterholder" },
+      {
+        en: "Passed Level III of the CFA Program",
+        vi: "Đã vượt qua Level III của CFA Program",
+      },
       {
         en: "Outstanding Trader Award, BIDV Treasury, 2019, 2020 and 2021",
         vi: "Outstanding Trader Award, Ban Kinh doanh Vốn BIDV, 2019, 2020 và 2021",
@@ -304,10 +310,10 @@ export const duongHoangAnh: MemberProfile = {
     email: "anhdh1994@gmail.com",
   },
   seo: {
-    title: "Dương Hoàng Anh, CFA | Fixed Income Strategist",
+    title: "Dương Hoàng Anh | Fixed Income Strategist",
     description: {
-      en: "Dương Hoàng Anh is a CFA Charterholder and BIDV fixed-income strategist bringing market, ALM, liquidity and risk expertise to the Banking Track.",
-      vi: "Dương Hoàng Anh là CFA Charterholder và chuyên gia chiến lược trái phiếu tại BIDV, đóng góp chuyên môn thị trường, ALM, thanh khoản và rủi ro cho Banking Track.",
+      en: "Dương Hoàng Anh is a BIDV fixed-income strategist bringing market, ALM, liquidity and risk expertise to the Banking Track.",
+      vi: "Dương Hoàng Anh là chuyên gia chiến lược trái phiếu tại BIDV, đóng góp chuyên môn thị trường, ALM, thanh khoản và rủi ro cho Banking Track.",
     },
   },
 };

@@ -75,6 +75,17 @@ for (const [slug, profile] of Object.entries(profiles)) {
   inspectLocalizedCopy(profile, `profiles.${slug}`);
 }
 
+const financeProfile = profiles["duong-hoang-anh"];
+const financeProfileContent = JSON.stringify(financeProfile);
+
+if (/,\s*CFA\b/i.test(financeProfile.identity.name)) {
+  violations.push("profiles.duong-hoang-anh.identity.name: inactive CFA designation");
+}
+
+if (/CFA(?:®)?\s+Charterholder/i.test(financeProfileContent)) {
+  violations.push("profiles.duong-hoang-anh: inactive CFA charterholder claim");
+}
+
 if (violations.length) {
   console.error("Content audit failed:\n" + violations.map((item) => `- ${item}`).join("\n"));
   process.exit(1);

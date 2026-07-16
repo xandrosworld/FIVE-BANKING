@@ -143,6 +143,22 @@ const navigation = {
       ["Liên hệ", "#contact"],
     ],
   },
+  project: {
+    en: [
+      ["Project finance", "#market-case"],
+      ["Team role", "#team-role"],
+      ["Credit expertise", "#expertise"],
+      ["Background", "#background"],
+      ["Contact", "#contact"],
+    ],
+    vi: [
+      ["Tài trợ dự án", "#market-case"],
+      ["Vai trò", "#team-role"],
+      ["Chuyên môn tín dụng", "#expertise"],
+      ["Kinh nghiệm", "#background"],
+      ["Liên hệ", "#contact"],
+    ],
+  },
 } as const;
 
 function Arrow() {

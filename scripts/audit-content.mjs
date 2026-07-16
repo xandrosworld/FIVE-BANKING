@@ -86,6 +86,13 @@ if (/CFA(?:®)?\s+Charterholder/i.test(financeProfileContent)) {
   violations.push("profiles.duong-hoang-anh: inactive CFA charterholder claim");
 }
 
+const projectFinanceProfile = profiles["ho-khanh-quynh"];
+const projectFinanceContent = JSON.stringify(projectFinanceProfile);
+
+if (/\bBIDV\b/i.test(projectFinanceContent)) {
+  violations.push("profiles.ho-khanh-quynh: restricted employer disclosure");
+}
+
 if (violations.length) {
   console.error("Content audit failed:\n" + violations.map((item) => `- ${item}`).join("\n"));
   process.exit(1);

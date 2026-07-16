@@ -15,6 +15,7 @@ Open an implemented profile:
 - `http://localhost:3000/duong-hoang-anh`
 - `http://localhost:3000/karthikeyan-ramaswamy`
 - `http://localhost:3000/nguyen-gia-huy`
+- `http://localhost:3000/ho-khanh-quynh`
 
 English is the default language. Add `?lang=vi` or use the page switcher for Vietnamese.
 

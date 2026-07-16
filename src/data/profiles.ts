@@ -1,5 +1,6 @@
 import type { Locale, LocalizedCopy, MemberProfile } from "@/types/profile";
 import { duongHoangAnh } from "./duong-hoang-anh.ts";
+import { hoKhanhQuynh } from "./ho-khanh-quynh.ts";
 import { karthikeyanRamaswamy } from "./karthikeyan-ramaswamy.ts";
 import { nguyenGiaHuy } from "./nguyen-gia-huy.ts";
 
@@ -370,6 +371,7 @@ export const profiles: Record<string, MemberProfile> = {
   [duongHoangAnh.slug]: duongHoangAnh,
   [karthikeyanRamaswamy.slug]: karthikeyanRamaswamy,
   [nguyenGiaHuy.slug]: nguyenGiaHuy,
+  [hoKhanhQuynh.slug]: hoKhanhQuynh,
 };
 
 export function localize(copy: LocalizedCopy, locale: Locale): string {

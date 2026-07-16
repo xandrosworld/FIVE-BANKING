@@ -460,6 +460,34 @@ test("each member renders a distinct domain template", async ({ page }) => {
   }
 });
 
+test("Vietnamese fonts and composed glyphs load correctly for every member", async ({ page }) => {
+  const memberRoutes = [route, financeRoute, advisoryRoute, riskRoute, projectFinanceRoute];
+
+  for (const memberRoute of memberRoutes) {
+    await page.goto(`${memberRoute}?lang=vi`);
+
+    const typography = await page.evaluate(async () => {
+      await document.fonts.ready;
+      const pageText = document.body.innerText;
+      const hero = document.querySelector<HTMLElement>("main h1");
+
+      return {
+        fontStatus: document.fonts.status,
+        heroFontFamily: hero ? getComputedStyle(hero).fontFamily : "",
+        hasReplacementGlyph: pageText.includes("\uFFFD"),
+        isNormalized: pageText === pageText.normalize("NFC"),
+      };
+    });
+
+    expect(typography.fontStatus).toBe("loaded");
+    expect(typography.hasReplacementGlyph).toBe(false);
+    expect(typography.isNormalized).toBe(true);
+    expect(typography.heroFontFamily.toLowerCase()).toContain(
+      memberRoute === projectFinanceRoute ? "noto" : "plex",
+    );
+  }
+});
+
 for (const width of [320, 375, 768, 1024, 1440]) {
   test(`has no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });

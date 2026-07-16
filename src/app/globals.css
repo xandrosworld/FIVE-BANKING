@@ -2158,10 +2158,10 @@ img {
 
 .profile-project .hero h1 {
   max-width: 720px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-editorial-serif), Georgia, "Times New Roman", serif;
   font-weight: 500;
-  letter-spacing: -0.055em;
-  line-height: 0.94;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
 }
 
 .profile-project .hero-portrait-wrap {
@@ -2190,8 +2190,10 @@ img {
 }
 
 .profile-project .market-case-intro h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-editorial-serif), Georgia, "Times New Roman", serif;
   font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .profile-project .market-blueprint {
@@ -2323,8 +2325,10 @@ img {
 .profile-project .role-heading h2,
 .profile-project .motivation-grid h2,
 .profile-project .contact-grid h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-editorial-serif), Georgia, "Times New Roman", serif;
   font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 .profile-project .expertise-archive {

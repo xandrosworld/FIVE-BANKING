@@ -445,6 +445,21 @@ test("legacy team routes permanently redirect to the short profile paths", async
   }
 });
 
+test("each member renders a distinct domain template", async ({ page }) => {
+  const templates = [
+    [route, ".docmind-section"],
+    [financeRoute, ".finance-terminal"],
+    [advisoryRoute, ".architecture-blueprint"],
+    [riskRoute, ".risk-control-board"],
+    [projectFinanceRoute, ".project-finance-model"],
+  ] as const;
+
+  for (const [memberRoute, signature] of templates) {
+    await page.goto(memberRoute);
+    await expect(page.locator(signature)).toBeVisible();
+  }
+});
+
 for (const width of [320, 375, 768, 1024, 1440]) {
   test(`has no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });

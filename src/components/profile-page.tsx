@@ -395,12 +395,133 @@ function DocMindCase({
   );
 }
 
+function HeroDomainMark({ variant }: { variant: MemberProfile["variant"] }) {
+  const labels = {
+    technology: ["BUILD", "TEST", "SHIP"],
+    finance: ["YTM", "DURATION", "ALM"],
+    advisory: ["DISCOVER", "DESIGN", "DELIVER"],
+    risk: ["EVIDENCE", "CONTROL", "DECISION"],
+    project: ["FEASIBILITY", "RISK", "STRUCTURE"],
+  } as const;
+
+  return (
+    <div className="hero-domain-mark" aria-hidden="true">
+      <span className="hero-domain-code mono">TB5 / {variant.toUpperCase()}</span>
+      <div>
+        {labels[variant].map((label, index) => (
+          <span className="mono" key={label}>
+            0{index + 1} {label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MarketDomainVisual({
+  variant,
+  markers,
+  locale,
+}: {
+  variant: FinanceMemberProfile["variant"];
+  markers: FinanceMemberProfile["marketCase"]["blueprintMarkers"];
+  locale: Locale;
+}) {
+  const labels = markers.map((marker) => localize(marker, locale));
+
+  if (variant === "advisory") {
+    return (
+      <div className="market-domain-visual architecture-blueprint" aria-hidden="true">
+        <div className="architecture-grid" />
+        <span className="architecture-node node-current mono">CURRENT</span>
+        <span className="architecture-node node-domain mono">{labels[0]}</span>
+        <span className="architecture-node node-solution mono">{labels[1]}</span>
+        <span className="architecture-node node-delivery mono">{labels[2]}</span>
+        <svg viewBox="0 0 760 300" preserveAspectRatio="none">
+          <path d="M120 150 H292 V72 H472" />
+          <path d="M292 150 V232 H472" />
+          <path d="M472 72 H630 V150" />
+          <path d="M472 232 H630 V150" />
+        </svg>
+        <span className="architecture-status mono">TARGET STATE / INSTITUTION READY</span>
+      </div>
+    );
+  }
+
+  if (variant === "risk") {
+    return (
+      <div className="market-domain-visual risk-control-board" aria-hidden="true">
+        <div className="risk-axis risk-axis-y mono">IMPACT</div>
+        <div className="risk-axis risk-axis-x mono">LIKELIHOOD</div>
+        <div className="risk-matrix">
+          {Array.from({ length: 9 }, (_, index) => <span key={index} />)}
+          <i className="risk-marker risk-marker-one" />
+          <i className="risk-marker risk-marker-two" />
+          <i className="risk-marker risk-marker-three" />
+        </div>
+        <div className="control-gates mono">
+          {labels.map((label, index) => (
+            <span key={label}><b>0{index + 1}</b>{label}<i /></span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "project") {
+    return (
+      <div className="market-domain-visual project-finance-model" aria-hidden="true">
+        <div className="capital-stack">
+          <span className="capital-senior"><b className="mono">55%</b>{labels[2]}</span>
+          <span className="capital-buffer"><b className="mono">20%</b>{labels[1]}</span>
+          <span className="capital-equity"><b className="mono">25%</b>{labels[0]}</span>
+        </div>
+        <div className="cashflow-model">
+          <p className="mono">PROJECTED CASH FLOW / DEBT SERVICE</p>
+          <div className="cashflow-bars">
+            {[34, 42, 51, 63, 69, 78, 88].map((height, index) => (
+              <span key={height} style={{ height: `${height}%` }}><i>{index + 1}</i></span>
+            ))}
+          </div>
+          <div className="debt-service-line" />
+          <span className="dscr-label mono">DSCR CONTROL LINE</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="market-domain-visual finance-terminal" aria-hidden="true">
+      <div className="terminal-ticker mono">
+        <span>VN10Y <b>+12bp</b></span>
+        <span>YTM <b>5.84</b></span>
+        <span>DUR <b>4.27</b></span>
+      </div>
+      <svg viewBox="0 0 760 270" preserveAspectRatio="none">
+        <path className="curve-grid-line" d="M0 210 H760" />
+        <path className="curve-grid-line" d="M0 140 H760" />
+        <path className="curve-grid-line" d="M0 70 H760" />
+        <path className="curve-shadow" d="M14 223 C130 213, 174 168, 278 174 C392 181, 443 98, 552 108 C636 116, 677 60, 746 43" />
+        <path className="curve-primary" d="M14 223 C130 213, 174 168, 278 174 C392 181, 443 98, 552 108 C636 116, 677 60, 746 43" />
+        <circle cx="278" cy="174" r="7" />
+        <circle cx="552" cy="108" r="7" />
+        <circle cx="746" cy="43" r="7" />
+      </svg>
+      <div className="terminal-markers mono">
+        {labels.map((label) => <span key={label}>{label}</span>)}
+      </div>
+    </div>
+  );
+}
+
 function MarketCase({
   profile,
   locale,
+  variant,
 }: {
   profile: FinanceMemberProfile["marketCase"];
   locale: Locale;
+  variant: FinanceMemberProfile["variant"];
 }) {
   return (
     <section id="market-case" className="market-case-section section-pad">
@@ -434,27 +555,7 @@ function MarketCase({
               <span>{localize(profile.blueprintLabel, locale)}</span>
               <span>01 / 03</span>
             </div>
-            <div className="market-curve-plot" aria-hidden="true">
-              <svg viewBox="0 0 760 270" preserveAspectRatio="none">
-                <path className="curve-grid-line" d="M0 210 H760" />
-                <path className="curve-grid-line" d="M0 140 H760" />
-                <path className="curve-grid-line" d="M0 70 H760" />
-                <path className="curve-shadow" d="M14 223 C130 213, 174 168, 278 174 C392 181, 443 98, 552 108 C636 116, 677 60, 746 43" />
-                <path className="curve-primary" d="M14 223 C130 213, 174 168, 278 174 C392 181, 443 98, 552 108 C636 116, 677 60, 746 43" />
-                <circle cx="278" cy="174" r="7" />
-                <circle cx="552" cy="108" r="7" />
-                <circle cx="746" cy="43" r="7" />
-              </svg>
-              <span className="curve-label curve-label-design mono">
-                {localize(profile.blueprintMarkers[0], locale)}
-              </span>
-              <span className="curve-label curve-label-control mono">
-                {localize(profile.blueprintMarkers[1], locale)}
-              </span>
-              <span className="curve-label curve-label-live mono">
-                {localize(profile.blueprintMarkers[2], locale)}
-              </span>
-            </div>
+            <MarketDomainVisual variant={variant} markers={profile.blueprintMarkers} locale={locale} />
             <figcaption>{localize(profile.thesis, locale)}</figcaption>
           </figure>
 
@@ -473,7 +574,45 @@ function MarketCase({
   );
 }
 
-function ExpertiseVisual({ item }: { item: FinanceMemberProfile["expertise"]["items"][number] }) {
+function ExpertiseVisual({
+  item,
+  variant,
+}: {
+  item: FinanceMemberProfile["expertise"]["items"][number];
+  variant: FinanceMemberProfile["variant"];
+}) {
+  if (variant === "advisory") {
+    return (
+      <div className="expertise-architecture">
+        <span />
+        <span />
+        <span />
+        <i />
+      </div>
+    );
+  }
+
+  if (variant === "risk") {
+    return (
+      <div className="expertise-controls">
+        {["TRACE", "CHECK", "REVIEW"].map((label, index) => (
+          <span className="mono" key={label}><i className={index <= Number(item.code) - 1 ? "is-on" : ""} />{label}</span>
+        ))}
+      </div>
+    );
+  }
+
+  if (variant === "project") {
+    return (
+      <div className={`expertise-project expertise-project-${item.visual}`}>
+        {[28, 45, 62, 56, 78, 88].map((height, index) => (
+          <span key={height + index} style={{ height: `${height}%` }} />
+        ))}
+        <i />
+      </div>
+    );
+  }
+
   if (item.visual === "curve") {
     return (
       <svg viewBox="0 0 620 190" preserveAspectRatio="none">
@@ -506,9 +645,11 @@ function ExpertiseVisual({ item }: { item: FinanceMemberProfile["expertise"]["it
 function ExpertiseSection({
   profile,
   locale,
+  variant,
 }: {
   profile: FinanceMemberProfile["expertise"];
   locale: Locale;
+  variant: FinanceMemberProfile["variant"];
 }) {
   const copy = ui[locale];
 
@@ -532,7 +673,7 @@ function ExpertiseSection({
             >
               <div className={`expertise-visual expertise-${item.visual}`} aria-hidden="true">
                 <span className="expertise-code mono">{item.code}</span>
-                <ExpertiseVisual item={item} />
+                <ExpertiseVisual item={item} variant={variant} />
                 <span className="expertise-signal mono">{localize(item.signal, locale)}</span>
               </div>
               <div className="expertise-details">
@@ -599,6 +740,7 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
 
       <main id="main-content" className={`profile-${profile.variant}`}>
         <section id="top" className="hero">
+          <HeroDomainMark variant={profile.variant} />
           <div className="shell hero-grid">
             <div className="hero-copy">
               <p className="competition-label mono">{localize(profile.competitionLabel, locale)}</p>
@@ -679,7 +821,7 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
         {profile.variant === "technology" ? (
           <DocMindCase profile={profile.flagshipCase} locale={locale} />
         ) : (
-          <MarketCase profile={profile.marketCase} locale={locale} />
+          <MarketCase profile={profile.marketCase} locale={locale} variant={profile.variant} />
         )}
 
         <section id="team-role" className="team-role-section section-pad">
@@ -755,7 +897,7 @@ export function ProfilePage({ profile, initialLocale }: ProfilePageProps) {
             </div>
           </section>
         ) : (
-          <ExpertiseSection profile={profile.expertise} locale={locale} />
+          <ExpertiseSection profile={profile.expertise} locale={locale} variant={profile.variant} />
         )}
 
         <section id="background" className="background-section section-pad">

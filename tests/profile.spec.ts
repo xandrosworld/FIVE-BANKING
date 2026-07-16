@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 const route = "/mai-tan-thanh";
 const financeRoute = "/duong-hoang-anh";
 const advisoryRoute = "/karthikeyan-ramaswamy";
+const riskRoute = "/nguyen-gia-huy";
 const karthikeyanLinkedIn = "https://www.linkedin.com/in/karthikeyan-ramaswamy-a0797774";
 const allowedGitHub = [
   "https://github.com/xandrosworld",
@@ -258,6 +259,90 @@ test("BFSI advisory metadata, structured data and sitemap are scoped correctly",
   expect(await sitemap.text()).toContain("/karthikeyan-ramaswamy");
 });
 
+test("branch risk profile presents verified experience without private details", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(riskRoute);
+
+  await expect(page.getByRole("heading", { level: 1, name: "Nguyễn Gia Huy" })).toBeVisible();
+  await expect(
+    page.getByText("Deputy Head of Risk Management, BIDV Truong Son Branch", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore the risk lens" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Where banking policy meets frontline decisions" })).toBeVisible();
+  await expect(page.getByText("6+ years in banking risk management", { exact: true })).toBeVisible();
+  await expect(page.locator('a[href="mailto:giahuy3393@gmail.com"]')).toHaveCount(3);
+  await expect(page.getByText(/\+84\s*948\s*046\s*574|0948\s*046\s*574/)).toHaveCount(0);
+  await expect(page.getByText(/March 3, 1993|03\/03\/1993/)).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await scrollThroughPage(page);
+  await page.screenshot({
+    path: "artifacts/screenshots/nguyen-gia-huy-desktop.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  expect(errors).toEqual([]);
+});
+
+test("branch risk profile mobile navigation and Vietnamese copy", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(riskRoute);
+
+  const menuButton = page.getByRole("button", { name: "Menu" });
+  await menuButton.click();
+  await page.locator('#mobile-navigation a[href="#market-case"]').click();
+  await expect(page).toHaveURL(/#market-case$/);
+
+  await page.getByRole("button", { name: "VI" }).click();
+  await expect(page).toHaveURL(/lang=vi/);
+  await expect(
+    page.locator(".hero-role").getByText(
+      "Phó Trưởng phòng Quản lý Rủi ro, BIDV Chi nhánh Trường Sơn",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await menuButton.click();
+  await expect(page.locator('#mobile-navigation a[href="#market-case"]')).toContainText("Góc nhìn rủi ro");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await scrollThroughPage(page);
+  await page.screenshot({
+    path: "artifacts/screenshots/nguyen-gia-huy-mobile.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+});
+
+test("branch risk metadata, structured data and sitemap are scoped correctly", async ({ page, request }) => {
+  await page.goto(riskRoute);
+  await expect(page).toHaveTitle("Nguyễn Gia Huy | Branch Risk Management");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    /\/nguyen-gia-huy$/,
+  );
+
+  const personData = await page.locator('script[type="application/ld+json"]').textContent();
+  const person = JSON.parse(personData ?? "{}");
+  expect(person["@type"]).toBe("Person");
+  expect(person.name).toBe("Nguyễn Gia Huy");
+  expect(person.email).toBe("giahuy3393@gmail.com");
+  expect(person.sameAs).toBeUndefined();
+  expect(person.knowsAbout).toContain("Banking risk management");
+  expect(person.memberOf.name).toBe("The Banking Five");
+  expect(person.telephone).toBeUndefined();
+  expect(person.address).toBeUndefined();
+
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.ok()).toBe(true);
+  expect(await sitemap.text()).toContain("/nguyen-gia-huy");
+});
+
 test("legacy team routes permanently redirect to the short profile paths", async ({ request }) => {
   for (const legacyRoute of ["/team/mai-tan-thanh", "/the-banking-five/mai-tan-thanh"]) {
     const response = await request.get(legacyRoute, { maxRedirects: 0 });
@@ -286,6 +371,14 @@ for (const width of [320, 375, 768, 1024, 1440]) {
   test(`finance profile has no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
     await page.goto(financeRoute);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}
+
+for (const width of [320, 375, 768, 1024, 1440]) {
+  test(`branch risk profile has no horizontal overflow at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
+    await page.goto(riskRoute);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 }

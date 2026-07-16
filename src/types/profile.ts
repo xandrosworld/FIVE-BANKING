@@ -63,7 +63,7 @@ export interface ExpertiseCase {
 
 interface BaseMemberProfile {
   slug: string;
-  variant: "technology" | "finance" | "advisory";
+  variant: "technology" | "finance" | "advisory" | "risk";
   knowsAbout: string[];
   identity: {
     name: string;
@@ -133,7 +133,7 @@ export interface TechnologyMemberProfile extends BaseMemberProfile {
 }
 
 export interface FinanceMemberProfile extends BaseMemberProfile {
-  variant: "finance" | "advisory";
+  variant: "finance" | "advisory" | "risk";
   marketCase: {
     name: string;
     sectionLabel: LocalizedCopy;

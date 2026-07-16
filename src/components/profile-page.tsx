@@ -127,6 +127,22 @@ const navigation = {
       ["Liên hệ", "#contact"],
     ],
   },
+  risk: {
+    en: [
+      ["Risk lens", "#market-case"],
+      ["Team role", "#team-role"],
+      ["Risk expertise", "#expertise"],
+      ["Background", "#background"],
+      ["Contact", "#contact"],
+    ],
+    vi: [
+      ["Góc nhìn rủi ro", "#market-case"],
+      ["Vai trò", "#team-role"],
+      ["Chuyên môn rủi ro", "#expertise"],
+      ["Kinh nghiệm", "#background"],
+      ["Liên hệ", "#contact"],
+    ],
+  },
 } as const;
 
 function Arrow() {

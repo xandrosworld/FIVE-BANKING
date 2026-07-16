@@ -1,6 +1,7 @@
 import type { Locale, LocalizedCopy, MemberProfile } from "@/types/profile";
 import { duongHoangAnh } from "./duong-hoang-anh.ts";
 import { karthikeyanRamaswamy } from "./karthikeyan-ramaswamy.ts";
+import { nguyenGiaHuy } from "./nguyen-gia-huy.ts";
 
 export const githubUrl = "https://github.com/xandrosworld";
 
@@ -368,6 +369,7 @@ export const profiles: Record<string, MemberProfile> = {
   [maiTanThanh.slug]: maiTanThanh,
   [duongHoangAnh.slug]: duongHoangAnh,
   [karthikeyanRamaswamy.slug]: karthikeyanRamaswamy,
+  [nguyenGiaHuy.slug]: nguyenGiaHuy,
 };
 
 export function localize(copy: LocalizedCopy, locale: Locale): string {

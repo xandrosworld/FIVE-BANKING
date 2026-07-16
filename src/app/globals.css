@@ -698,13 +698,15 @@ img {
 }
 
 .profile-finance .hero h1,
-.profile-advisory .hero h1 {
+.profile-advisory .hero h1,
+.profile-risk .hero h1 {
   max-width: 850px;
   font-size: clamp(3.4rem, 6.1vw, 6.25rem);
 }
 
 .profile-finance .hero-portrait img,
-.profile-advisory .hero-portrait img {
+.profile-advisory .hero-portrait img,
+.profile-risk .hero-portrait img {
   object-position: center;
 }
 
@@ -1726,18 +1728,21 @@ img {
   }
 
   .profile-finance .hero h1,
-  .profile-advisory .hero h1 {
+  .profile-advisory .hero h1,
+  .profile-risk .hero h1 {
     font-size: clamp(3rem, 14vw, 4.45rem);
   }
 
   .profile-finance .hero-portrait-wrap,
-  .profile-advisory .hero-portrait-wrap {
+  .profile-advisory .hero-portrait-wrap,
+  .profile-risk .hero-portrait-wrap {
     width: min(76vw, 280px);
     justify-self: center;
   }
 
   .profile-finance .hero-portrait img,
-  .profile-advisory .hero-portrait img {
+  .profile-advisory .hero-portrait img,
+  .profile-risk .hero-portrait img {
     aspect-ratio: 4 / 5;
     object-position: center;
   }
